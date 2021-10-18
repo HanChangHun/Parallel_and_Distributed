@@ -1,10 +1,16 @@
-all: quicksort
+all: test
 
-quicksort : main.o
-	gcc -o quicksort_test main.o
+test : main.o
+	gcc -o test main.o
 
-sorts.o : sorts.c
-	gcc -c -o sorts.o sorts.c
+quicksort.o : quicksort.c
+	gcc -c -o quicksort.o quicksort.c
+
+mergesort.o : mergesort.c
+	gcc -c -o mergesort.o mergesort.c
+
+bucketsort.o : bucketsort.c
+	gcc -c -o bucketsort.o bucketsort.c
 
 main.o : main.c
 	gcc -c -o main.o main.c
