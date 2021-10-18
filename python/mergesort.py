@@ -2,20 +2,20 @@ from threading import Thread
 import numpy as np
 
 
-def merge(arr, low, mid, high):
-    left = np.zeros([mid - low + 1], dtype=int)
-    right = np.zeros([high - mid], dtype=int)
+def merge(arr, start, mid, end):
+    left = np.zeros([mid - start + 1], dtype=int)
+    right = np.zeros([end - mid], dtype=int)
 
-    n1 = mid - low + 1
-    n2 = high - mid
+    n1 = mid - start + 1
+    n2 = end - mid
 
     for i in range(n1):
-        left[i] = arr[i + low]
+        left[i] = arr[i + start]
 
     for i in range(n2):
         right[i] = arr[i + mid + 1]
 
-    k = low
+    k = start
     i = j = 0
 
     while i < n1 and j < n2:
@@ -39,48 +39,47 @@ def merge(arr, low, mid, high):
         j += 1
 
 
-def merge_sort(arr, low, high):
-    mid = int(low + (high - low) // 2)
-    if low < high:
-        merge_sort(arr, low, mid)
-        merge_sort(arr, mid + 1, high)
-        merge(arr, low, mid, high)
+def merge_sort(arr, start, end):
+    mid = int(start + (end - start) // 2)
+    if start < end:
+        merge_sort(arr, start, mid)
+        merge_sort(arr, mid + 1, end)
+        merge(arr, start, mid, end)
 
 
-def merge_sort_th_st(arr, low, high, num_th):
-    size = high - low
-    mid = int(low + size // 2)
+def merge_sort_th_st(arr, start, end, num_th):
+    size = end - start + 1
+    mid = int(start + size // 2)
 
     threads = []
     for i in range(num_th):
-        low2 = i * int(size / num_th)
-        high2 = (i + 1) * int(size / num_th) - 1
+        start2 = i * int(size / num_th)
+        end2 = (i + 1) * int(size / num_th) - 1
 
-        th = Thread(target=lambda: merge_sort(arr, low2, high2))
+        th = Thread(target=lambda: merge_sort(arr, start2, end2))
         th.start()
-
         threads.append(th)
 
     for th in threads:
         th.join()
 
-    if low < high:
-        merge_sort(arr, low, mid)
-        merge_sort(arr, mid + 1, high)
-        merge(arr, low, mid, high)
+    if start < end:
+        merge_sort(arr, start, mid)
+        merge_sort(arr, mid + 1, end)
+        merge(arr, start, mid, end)
 
 
-def merge_sort_th_dy(arr, low, high):
-    size = high - low
-    mid = int(low + size // 2)
+def merge_sort_th_dy(arr, start, end):
+    size = end - start + 1
+    mid = int(start + size // 2)
 
-    if low < high:
-        lthread = Thread(target=lambda: merge_sort(arr, low, mid))
+    if start < end:
+        lthread = Thread(target=lambda: merge_sort(arr, start, mid))
         lthread.start()
-        rthread = Thread(target=lambda: merge_sort(arr, mid + 1, high))
+        rthread = Thread(target=lambda: merge_sort(arr, mid + 1, end))
         rthread.start()
     
     lthread.join()
     rthread.join()
     
-    merge(arr, low, mid, high)
+    merge(arr, start, mid, end)
