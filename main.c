@@ -10,6 +10,7 @@
 #include <pthread.h>
 
 #include "quicksort.h"
+#include "mergesort.h"
 #include <sys/time.h>
 
 #define INPUT_SIZE_LOG 24
@@ -65,9 +66,17 @@ int main(int argc, char *argv[])
   {
     quicksort(output_array, 0, INPUT_SIZE - 1);
   }
-  else if (strcmp(argv[1], "quicksort_th_dy") == 0)
+  else if (strcmp(argv[1], "quicksort_th") == 0)
   {
-    quicksort_th_dy(output_array, 0, INPUT_SIZE - 1, THREAD_LEVEL);
+    quicksort_th(output_array, 0, INPUT_SIZE - 1, THREAD_LEVEL);
+  }
+  else if (strcmp(argv[1], "mergesort") == 0)
+  {
+    mergesort(output_array, 0, INPUT_SIZE - 1);
+  }
+  else if (strcmp(argv[1], "mergesort_th") == 0)
+  {
+    mergesort_th(output_array, 0, INPUT_SIZE - 1, THREAD_LEVEL);
   }
   else
   {

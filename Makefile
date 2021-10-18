@@ -1,14 +1,23 @@
-all: test1 test2
+all: test1 test2 test3
 
-test1 : main.o quicksort.o
-	gcc -g -o test main.o quicksort.o -lpthread
+test1 : test
 	./test quicksort
 	rm test
 
-test2 : main.o quicksort.o
-	gcc -g -o test main.o quicksort.o -lpthread
-	./test quicksort_th_dy
+test2 : test
+	./test quicksort_th
 	rm test
+
+test3 : test
+	./test mergesort
+	rm test
+
+test4 : test
+	./test mergesort_th
+	rm test
+
+test: main.o quicksort.o mergesort.o
+	gcc -g -o test main.o quicksort.o mergesort.o -lpthread
 
 quicksort.o : quicksort.c
 	gcc -g -c -o quicksort.o quicksort.c -lpthread

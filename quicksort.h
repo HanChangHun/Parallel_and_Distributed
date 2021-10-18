@@ -3,7 +3,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-struct thread_data{
+
+struct q_thread_data{
 	int *arr;
 	int start;
 	int end;
@@ -11,5 +12,5 @@ struct thread_data{
 };
 
 int quicksort(int *arr, int start, int end);
-int quicksort_th_dy(int *arr, int start, int end, int tlevel);
-void *quicksort_th_dy_worker(void *threadarg);
+int quicksort_th(int *arr, int start, int end, int tlevel);
+void *quicksort_th_worker(void *threadarg);

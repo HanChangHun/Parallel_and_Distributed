@@ -45,47 +45,35 @@ int quicksort(int *arr, int start, int end)
     return i;
 }
 
-int quicksort_th_dy(int *arr, int start, int end, int tlevel)
+int quicksort_th(int *arr, int start, int end, int tlevel)
 {
     int rc;
     void *status;
 
-    pthread_attr_t attr;
-    pthread_attr_init(&attr);
-    pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_JOINABLE);
-
-    struct thread_data td;
+    struct q_thread_data td;
     td.arr = arr;
     td.start = start;
     td.end = end;
     td.level = tlevel;
 
     pthread_t main_thread;
-    rc = pthread_create(&main_thread, &attr, quicksort_th_dy_worker,
+    rc = pthread_create(&main_thread, NULL, quicksort_th_worker,
                         (void *)&td);
-
     if (rc)
-    {
         printf("ERROR; return code from pthread_create() is %d\n", rc);
-        exit(-1);
-    }
 
-    pthread_attr_destroy(&attr);
     rc = pthread_join(main_thread, &status);
     if (rc)
-    {
         printf("ERROR; return code from pthread_join() is %d\n", rc);
-        exit(-1);
-    }
 }
 
-void *quicksort_th_dy_worker(void *threadargs)
+void *quicksort_th_worker(void *threadargs)
 {
     int t, rc;
     void *status;
 
-    struct thread_data *targs;
-    targs = (struct thread_data *)threadargs;
+    struct q_thread_data *targs;
+    targs = (struct q_thread_data *)threadargs;
 
     if (targs->level <= 0 || targs->start == targs->end)
     {
@@ -119,7 +107,7 @@ void *quicksort_th_dy_worker(void *threadargs)
         }
     }
 
-    struct thread_data td_arr[2];
+    struct q_thread_data td_arr[2];
     for (t = 0; t < 2; t++)
     {
         td_arr[t].arr = targs->arr;
@@ -134,7 +122,7 @@ void *quicksort_th_dy_worker(void *threadargs)
     pthread_t threads[2];
     for (t = 0; t < 2; t++)
     {
-        rc = pthread_create(&threads[t], NULL, quicksort_th_dy_worker,
+        rc = pthread_create(&threads[t], NULL, quicksort_th_worker,
                             (void *)&td_arr[t]);
         if (rc)
         {
