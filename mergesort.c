@@ -41,49 +41,83 @@ void mergesort(int *arr, int start, int end)
     }
 }
 
-void mergesort_th(int *arr, int start, int end, int num_th)
+void mergesort_th(int *arr, int start, int end, int tlevel)
 {
-    int t, rc;
+    int t, rc, start2, end2;
     void *status;
 
-    printf("1\n");
+    struct m_thread_data td;
+    td.arr = arr;
+    td.start = start;
+    td.end = end;
+    td.tlevel = tlevel;
 
-    struct m_thread_data td_arr[num_th];
-    for (t = 0; t < num_th; t++)
-    {
-        td_arr[t].arr = arr;
-        td_arr[t].start = t * ((end - start) / 4);
-        td_arr[t].end = (t + 1) * ((end - start) / 4) - 1;
-    }
+    pthread_t main_thread;
+    rc = pthread_create(&main_thread, NULL, mergesort_th_worker,
+                        (void *)&td);
+    if (rc)
+        printf("ERROR; return code from pthread_create() is %d\n", rc);
 
-    printf("2\n");
-
-    pthread_t threads[num_th];
-    for (t = 0; t < num_th; t++)
-    {
-        printf("Thread start: %d", t);
-        rc = pthread_create(&threads[t], NULL, mergesort_th_worker,
-                            (void *)&td_arr[t]);
-        if (rc)
-            printf("ERROR; return code from pthread_create() is %d\n", rc);
-    }
-
-    printf("3\n");
-
-    for (t = 0; t < num_th; t++)
-    {
-        rc = pthread_join(threads[t], &status);
-        if (rc)
-            printf("ERROR; return code from pthread_join() is %d\n", rc);
-    }
+    rc = pthread_join(main_thread, &status);
+    if (rc)
+        printf("ERROR; return code from pthread_join() is %d\n", rc);
 }
 
 void *mergesort_th_worker(void *threadargs)
 {
+    int t, rc;
+    void *status;
+
     struct m_thread_data *targs;
     targs = (struct m_thread_data *)threadargs;
+    int *arr = targs->arr;
+    int start = targs->start;
+    int end = targs->end;
+    int tlevel = targs->tlevel;
 
-    mergesort(targs->arr, targs->start, targs->end);
+    if (tlevel <= 0 || start == end)
+    {
+        //We have plenty of threads, finish with sequential.
+        mergesort(arr, start, end);
+        pthread_exit(NULL);
+    }
+
+    int mid = start + (end - start) / 2;
+
+    struct m_thread_data td_arr[2];
+    for (t = 0; t < 2; t++)
+    {
+        td_arr[t].arr = arr;
+        td_arr[t].tlevel = tlevel - 1;
+    }
+    td_arr[0].start = start;
+    td_arr[0].end = mid;
+    td_arr[1].start = mid + 1;
+    td_arr[1].end = end;
+
+    pthread_t threads[2];
+    for (t = 0; t < 2; t++)
+    {
+        rc = pthread_create(&threads[t], NULL, mergesort_th_worker,
+                            (void *)&td_arr[t]);
+        if (rc)
+        {
+            printf("ERROR; return code from pthread_create() is %d\n", rc);
+            exit(-1);
+        }
+    }
+
+    for (int t = 0; t < 2; t++)
+    {
+        rc = pthread_join(threads[t], &status);
+        if (rc)
+        {
+            printf("ERROR; return code from pthread_join() is %d\n", rc);
+            exit(-1);
+        }
+    }
+
+    merge(arr, start, mid, end);
 
     pthread_exit(NULL);
 }

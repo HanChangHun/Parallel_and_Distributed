@@ -8,6 +8,7 @@ struct m_thread_data{
 	int *arr;
 	int start;
 	int end;
+	int tlevel;
 };
 
 void merge(int* arr, int start, int mid, int end);

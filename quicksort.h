@@ -8,7 +8,7 @@ struct q_thread_data{
 	int *arr;
 	int start;
 	int end;
-    int level;
+    int tlevel;
 };
 
 int quicksort(int *arr, int start, int end);

@@ -15,7 +15,7 @@
 
 #define INPUT_SIZE_LOG 24
 #define INPUT_SIZE (1 << INPUT_SIZE_LOG)
-#define THREAD_LEVEL 12
+#define THREAD_LEVEL 10
 
 int *input_array;
 int *output_array;
@@ -76,7 +76,7 @@ int main(int argc, char *argv[])
   }
   else if (strcmp(argv[1], "mergesort_th") == 0)
   {
-    mergesort_th(output_array, 0, INPUT_SIZE - 1, THREAD_LEVEL);
+    mergesort_th(output_array, 0, INPUT_SIZE - 1, 3);
   }
   else
   {

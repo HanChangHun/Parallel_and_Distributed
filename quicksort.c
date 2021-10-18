@@ -54,7 +54,7 @@ int quicksort_th(int *arr, int start, int end, int tlevel)
     td.arr = arr;
     td.start = start;
     td.end = end;
-    td.level = tlevel;
+    td.tlevel = tlevel;
 
     pthread_t main_thread;
     rc = pthread_create(&main_thread, NULL, quicksort_th_worker,
@@ -75,7 +75,7 @@ void *quicksort_th_worker(void *threadargs)
     struct q_thread_data *targs;
     targs = (struct q_thread_data *)threadargs;
 
-    if (targs->level <= 0 || targs->start == targs->end)
+    if (targs->tlevel <= 0 || targs->start == targs->end)
     {
         //We have plenty of threads, finish with sequential.
         quicksort(targs->arr, targs->start, targs->end);
@@ -111,7 +111,7 @@ void *quicksort_th_worker(void *threadargs)
     for (t = 0; t < 2; t++)
     {
         td_arr[t].arr = targs->arr;
-        td_arr[t].level = targs->level - 1;
+        td_arr[t].tlevel = targs->tlevel - 1;
     }
     td_arr[0].start = targs->start;
     td_arr[0].end = i - 1;
