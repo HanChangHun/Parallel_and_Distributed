@@ -80,6 +80,9 @@ int main(int argc, char *argv[])
   }
   gettimeofday(&end, NULL);
 
+  diff = ((end.tv_sec * 1000000 + end.tv_usec) - (start.tv_sec * 1000000 + start.tv_usec)) / 1000000.0;
+  printf("elapsed time: %lf sec.\n", diff);
+
   /* verification */
   if (verify())
     printf("sorting verified!\n");
