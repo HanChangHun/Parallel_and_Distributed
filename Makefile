@@ -16,8 +16,12 @@ test4 : test
 	./test mergesort_th
 	rm test
 
-test: main.o quicksort.o mergesort.o
-	gcc -g -o test main.o quicksort.o mergesort.o -lpthread
+test5 : test
+	./test bucketsort
+	rm test *.o
+
+test: main.o quicksort.o mergesort.o bucketsort.o
+	gcc -g -o test main.o quicksort.o mergesort.o bucketsort.o -lpthread
 
 quicksort.o : quicksort.c
 	gcc -g -c -o quicksort.o quicksort.c -lpthread

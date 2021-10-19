@@ -9,9 +9,10 @@
 #include <string.h>
 #include <pthread.h>
 
+#include <sys/time.h>
 #include "quicksort.h"
 #include "mergesort.h"
-#include <sys/time.h>
+#include "bucketsort.h"
 
 #define INPUT_SIZE_LOG 24
 #define INPUT_SIZE (1 << INPUT_SIZE_LOG)
@@ -63,21 +64,15 @@ int main(int argc, char *argv[])
   /* your sorting algorithm */
   gettimeofday(&start, NULL);
   if (strcmp(argv[1], "quicksort") == 0)
-  {
     quicksort(output_array, 0, INPUT_SIZE - 1);
-  }
   else if (strcmp(argv[1], "quicksort_th") == 0)
-  {
     quicksort_th(output_array, 0, INPUT_SIZE - 1, THREAD_LEVEL);
-  }
   else if (strcmp(argv[1], "mergesort") == 0)
-  {
     mergesort(output_array, 0, INPUT_SIZE - 1);
-  }
   else if (strcmp(argv[1], "mergesort_th") == 0)
-  {
     mergesort_th(output_array, 0, INPUT_SIZE - 1, 3);
-  }
+  else if (strcmp(argv[1], "bucketsort") == 0)
+    bucketsort(output_array, 0, INPUT_SIZE - 1);
   else
   {
     printf("There is no selected method.\n");
