@@ -77,7 +77,6 @@ void *mergesort_th_worker(void *threadargs)
 
     if (tlevel <= 0 || start == end)
     {
-        //We have plenty of threads, finish with sequential.
         mergesort(arr, start, end);
         pthread_exit(NULL);
     }

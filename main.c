@@ -70,7 +70,7 @@ int main(int argc, char *argv[])
   else if (strcmp(argv[1], "mergesort") == 0)
     mergesort(output_array, 0, INPUT_SIZE - 1);
   else if (strcmp(argv[1], "mergesort_th") == 0)
-    mergesort_th(output_array, 0, INPUT_SIZE - 1, 3);
+    mergesort_th(output_array, 0, INPUT_SIZE - 1, THREAD_LEVEL);
   else if (strcmp(argv[1], "bucketsort") == 0)
     bucketsort(output_array, 0, INPUT_SIZE - 1);
   else
@@ -79,9 +79,6 @@ int main(int argc, char *argv[])
     return 1;
   }
   gettimeofday(&end, NULL);
-
-  diff = ((end.tv_sec * 1000000 + end.tv_usec) - (start.tv_sec * 1000000 + start.tv_usec)) / 1000000.0;
-  printf("elapsed time: %lf sec.\n", diff);
 
   /* verification */
   if (verify())
