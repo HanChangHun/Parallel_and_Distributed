@@ -2,18 +2,15 @@
 
 __global__ void vector_add(float *out, float *a, float *b, int n) {
   int index = 0;
-  int stride = 1
-  for(int i = index; i < n; i += stride){
-      out[i] = a[i] + b[i];
+  int stride = 1 for (int i = index; i < n; i += stride) {
+    out[i] = a[i] + b[i];
   }
 }
 
-__global__ void cuda_hello(){
-    printf("Hello World from GPU!\n");
-}
+__global__ void cuda_hello() { printf("Hello World from GPU!\n"); }
 
 int main(void) {
-  cuda_hello<<<1,1>>>(); 
+  cuda_hello<<<1, 1>>>();
   cudaError_t err = cudaSuccess;
 
   // Print the vector length to be used, and compute its size

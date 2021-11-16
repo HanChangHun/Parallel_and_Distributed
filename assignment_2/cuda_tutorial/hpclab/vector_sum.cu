@@ -30,8 +30,7 @@ __global__ void vecAdd(int *_a, int *_b, int *_c) {
 }
 
 int main(void) {
-  struct timeval startTime, endTime;
-  struct timeval startTime2, endTime2;
+  struct timeval startTime, endTime, startTime2, endTime2;
   double diffTime;
 
   int *a, *b, *c, *h_c;
@@ -61,7 +60,7 @@ int main(void) {
   diffTime = (endTime.tv_sec - startTime.tv_sec) +
              ((endTime.tv_usec - startTime.tv_usec) / 1000000.0);
   printf("VectorSum on Host: %lf ms\n", diffTime);
-  
+
   cudaMalloc(&d_a, memSize);
   cudaMalloc(&d_b, memSize);
   cudaMalloc(&d_c, memSize);
