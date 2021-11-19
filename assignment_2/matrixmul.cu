@@ -31,7 +31,7 @@
 /* */
 /*-----------------------------------------*/
 
-#define TILE_WIDTH 2
+#define TILE_WIDTH 16
 
 __global__ void MatrixMul_kernel(float *Md, float *Nd, float *Pd, int Width) {
   int row = blockDim.x * blockIdx.x + threadIdx.x;

@@ -1,11 +1,7 @@
 *.o
 *.bin
 *.gold
-
-
-# Created by https://www.toptal.com/developers/gitignore/api/visualstudiocode,cuda
-# Edit at https://www.toptal.com/developers/gitignore?templates=visualstudiocode,cuda
-
+assignment_2/matrix_cuda
 ### CUDA ###
 *.i
 *.ii
@@ -32,5 +28,3 @@
 
 # Support for Project snippet scope
 !.vscode/*.code-snippets
-
-# End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,cuda
