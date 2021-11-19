@@ -32,7 +32,9 @@ __global__ void matMul_kernel(float *_A, float *_B, float *_C) {
   int row = threadIdx.y;
   int col = threadIdx.x;
   int index = row * blockDim.x + col;
+
   _C[index] = 0;
+
   for (int k = 0; k < K_SIZE; k++)
     for (int i = 0; i < WORK_LOAD; i++)
       _C[index] += _A[row * K_SIZE + k] * _B[col + k * COL_SIZE];
@@ -62,7 +64,7 @@ __global__ void matMul_kernel_shared_C(float *_A, float *_B, float *_C) {
   int col = threadIdx.x;
   int index = row * blockDim.x + col;
 
-  float sC = 0;
+  float sC = 0;  // add register
 
   for (int k = 0; k < K_SIZE; k++)
     for (int i = 0; i < WORK_LOAD; i++)
